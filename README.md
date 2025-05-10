@@ -16,6 +16,10 @@
 
 ## bsg - Boseji's Security and Privacy Utilities
 
+A collection of Security and Privacy utilities and some notes for help.
+
+This is **Golang** package collection as well as few utility command line programs.
+
 ## License
 
 `SPDX: GPL-3.0-or-later`
