@@ -56,6 +56,8 @@ import (
 
 	// Import embed package.
 	_ "embed"
+
+	"github.com/boseji/bsg/totp"
 )
 
 //go:embed data/secrets.json
@@ -116,5 +118,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Secrets: %+v\n", secrets)
+	// fmt.Printf("Secrets: %+v\n", secrets)
+
+	// Generate and display the TOTP for each secret.
+	for _, entry := range secrets {
+		totp := totp.GenerateTOTP(entry.Secret)
+		fmt.Printf("Name: %-10s TOTP: %s\n", entry.Name, totp)
+	}
 }
