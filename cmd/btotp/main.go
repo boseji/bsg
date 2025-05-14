@@ -49,12 +49,13 @@
 package main
 
 import (
+	"encoding/json"
+	"flag"
+	"fmt"
+	"os"
 
 	// Import embed package.
 	_ "embed"
-	"encoding/json"
-	"fmt"
-	"os"
 )
 
 //go:embed data/secrets.json
@@ -70,15 +71,47 @@ func main() {
 	var secretsFile string
 
 	fmt.Println("Boseji's TOTP generator v0.1")
+	// Define the file flag with both long and short versions.
+	flag.StringVar(&secretsFile, "file", "", "path to the secrets JSON file")
+	flag.StringVar(&secretsFile, "f", "", "path to the secrets JSON file (shorthand)")
 
-	secretsFile = "data/secrets.json"
-	fmt.Println("File:", secretsFile)
+	// Define help flags.
+	var showHelp bool
+	flag.BoolVar(&showHelp, "help", false, "display help")
+	flag.BoolVar(&showHelp, "h", false, "display help (shorthand)")
 
+	// Custom usage message.
+	flag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "Usage: %s [-file filename]\n", os.Args[0])
+		flag.PrintDefaults()
+	}
+
+	flag.Parse()
+
+	// If help flag is provided, display usage and exit.
+	if showHelp {
+		flag.Usage()
+		os.Exit(0)
+	}
+
+	var data []byte
 	var err error
+
+	if secretsFile != "" {
+		// Read from the specified JSON file.
+		data, err = os.ReadFile(secretsFile)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error reading file %s: %v\n", secretsFile, err)
+			os.Exit(1)
+		}
+	} else {
+		// Fallback to embedded secrets.
+		data = embeddedSecrets
+	}
 
 	// Parse the JSON data.
 	var secrets []SecretEntry
-	if err = json.Unmarshal(embeddedSecrets, &secrets); err != nil {
+	if err = json.Unmarshal(data, &secrets); err != nil {
 		fmt.Fprintf(os.Stderr, "Error parsing JSON: %v\n", err)
 		os.Exit(1)
 	}
