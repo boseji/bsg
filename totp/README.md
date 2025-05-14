@@ -24,6 +24,16 @@ This is **Golang** package collection as well as few utility command line progra
 
 Package `totp` provides a generic TOTP (Time-based One-Time Password) generator that uses functional options to configure parameters such as period, digit length, hash algorithm, and the time variable.
 
+## Attributions
+
+This library is inspired by the much better original and much more 
+feature rich library:
+
+<https://github.com/pquerna/otp>
+
+Many thanks to the excellent work done by the contributors and generously
+supporting the Open-source security movement.
+
 ## License
 
 `SPDX: GPL-3.0-or-later`

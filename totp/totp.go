@@ -45,6 +45,15 @@
 //   You should have received a copy of the GNU General Public License along
 //   with this program. If not, see <https://www.gnu.org/licenses/>.
 //
+//  Attributions
+// ---------------
+// This library is inspired by the much better original and much more
+// feature rich library:
+//
+// https://github.com/pquerna/otp
+//
+// Many thanks to the excellent work done by the contributors and generously
+// supporting the Open-source security movement.
 
 // Package totp provides a generic TOTP (Time-based One-Time Password)
 // generator that uses functional options to configure parameters such as period,
