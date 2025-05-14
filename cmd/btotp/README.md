@@ -42,7 +42,7 @@ external JSON file or from an embedded file.
 
 ---
 
-### Building
+### Building Manually
 
 For your current platform:
 ```bash
@@ -53,6 +53,21 @@ For cross-compilation (set `GOOS` and `GOARCH` accordingly), for example, for Wi
 ```bash
 GOOS=windows GOARCH=amd64 go build -o btotp-windows.exe ./cmd/btotp
 ```
+---
+### Building Using Makefile
+
+```sh
+make btotp
+```
+
+This would build the executables in the `build` directory at Project Root.
+
+```sh
+make clean
+```
+
+Would remove all the build artifacts.
+
 ---
 ### Usage
 
