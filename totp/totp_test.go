@@ -50,6 +50,7 @@ package totp
 
 import (
 	"crypto/sha256"
+	"fmt"
 	"testing"
 	"time"
 )
@@ -118,4 +119,16 @@ func TestGenerate(t *testing.T) {
 			}
 		})
 	}
+}
+
+// ExampleGenerate demonstrates using Generate with default options and a custom time.
+func ExampleGenerate() {
+	// The Base32-encoded secret is that of "12345678901234567890".
+	secret := "GEZDGNBVGY3TQOJQGEZDGNBVGY3TQOJQ"
+
+	// Use a fixed time (Unix time 59) so the output is predictable.
+	otp, _ := Generate(secret, WithTime(time.Unix(59, 0)))
+	fmt.Println(otp)
+	// Output:
+	// 287082
 }

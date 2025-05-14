@@ -171,3 +171,47 @@ func Generate(secret string, opts ...Option) (string, error) {
 	otpStr := fmt.Sprintf("%0*d", options.Digits, otp)
 	return otpStr, nil
 }
+
+// GenerateTOTP computes a TOTP value based on the provided Base32-encoded secret.
+// This intern is equivalent to calling Generate with default options.
+// This is included for backward compatibility with the original implementation.
+func GenerateTOTP(secret string) string {
+	// Normalize the secret: trim whitespace, convert to uppercase, and remove all '=' characters.
+	secret = strings.ToUpper(strings.TrimSpace(secret))
+	secret = strings.ReplaceAll(secret, "=", "")
+
+	// Create a Base32 decoder configured to expect no padding.
+	decoder := base32.StdEncoding.WithPadding(base32.NoPadding)
+	key, err := decoder.DecodeString(secret)
+	if err != nil {
+		// In a production app, you might want to handle the error differently.
+		panic(fmt.Sprintf("Error decoding secret '%s': %v", secret, err))
+	}
+
+	// Calculate the current time step (30-second intervals)
+	timeStep := uint64(time.Now().Unix() / 30)
+
+	// Convert the time step to an 8-byte array (big-endian)
+	buf := make([]byte, 8)
+	binary.BigEndian.PutUint64(buf, timeStep)
+
+	// Create an HMAC-SHA1 hash from the key and time step
+	h := hmac.New(sha1.New, key)
+	h.Write(buf)
+	hash := h.Sum(nil)
+
+	// Dynamic truncation: use the last nibble of the hash as an offset
+	offset := hash[len(hash)-1] & 0x0F
+
+	// Extract a 4-byte dynamic binary code starting at the offset
+	binaryCode := (uint32(hash[offset])&0x7F)<<24 |
+		(uint32(hash[offset+1])&0xFF)<<16 |
+		(uint32(hash[offset+2])&0xFF)<<8 |
+		(uint32(hash[offset+3]) & 0xFF)
+
+	// Calculate the OTP value (6 digits)
+	otp := binaryCode % 1000000
+
+	// Format the OTP with zero-padding to ensure it has 6 digits
+	return fmt.Sprintf("%06d", otp)
+}
