@@ -1,4 +1,4 @@
-# gitignore file
+# Project Makefile
 #
 # bsg - Boseji's Security and Privacy Utilities
 #
@@ -28,4 +28,10 @@
 #   with this program. If not, see <https://www.gnu.org/licenses/>.
 #
 
-secrets.json
+# bring in the btotp-specific rules
+include cmd/btotp/btotp.mk
+
+.PHONY: clean
+
+clean: clean_btotp
+
