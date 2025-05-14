@@ -52,7 +52,13 @@
 package totp
 
 import (
+	"crypto/hmac"
+	"crypto/sha1"
+	"encoding/base32"
+	"encoding/binary"
+	"fmt"
 	"hash"
+	"strings"
 	"time"
 )
 
@@ -66,3 +72,102 @@ type Options struct {
 
 // Option is a function that modifies Options.
 type Option func(*Options)
+
+// DefaultOptions returns an Options struct populated with default values.
+func DefaultOptions() Options {
+	return Options{
+		Period:    30,
+		Digits:    6,
+		Algorithm: sha1.New,
+	}
+}
+
+// WithPeriod sets the time step (in seconds).
+func WithPeriod(period int) Option {
+	return func(opts *Options) {
+		opts.Period = period
+	}
+}
+
+// WithDigits sets the number of digits for the OTP.
+func WithDigits(digits int) Option {
+	return func(opts *Options) {
+		opts.Digits = digits
+	}
+}
+
+// WithAlgorithm sets the hash algorithm used for HMAC.
+// For example, use sha1.New (default), sha256.New, or sha512.New.
+func WithAlgorithm(alg func() hash.Hash) Option {
+	return func(opts *Options) {
+		opts.Algorithm = alg
+	}
+}
+
+// WithTime sets a custom time to be used for TOTP generation.
+func WithTime(t time.Time) Option {
+	return func(opts *Options) {
+		opts.Time = t
+	}
+}
+
+// Generate produces a TOTP code for the provided Base32-encoded secret,
+// applying any functional options provided. If an option is omitted,
+// default values are used. If no custom time is provided, time.Now() is used.
+func Generate(secret string, opts ...Option) (string, error) {
+	options := DefaultOptions()
+	for _, opt := range opts {
+		opt(&options)
+	}
+
+	// If no time provided, use current time.
+	var t time.Time
+	if options.Time.IsZero() {
+		t = time.Now()
+	} else {
+		t = options.Time
+	}
+
+	// Normalize the secret: trim whitespace, convert to uppercase,
+	// and remove any '=' characters.
+	secret = strings.ToUpper(strings.TrimSpace(secret))
+	secret = strings.ReplaceAll(secret, "=", "")
+
+	// Decode the Base32 secret using a decoder that expects no padding.
+	decoder := base32.StdEncoding.WithPadding(base32.NoPadding)
+	key, err := decoder.DecodeString(secret)
+	if err != nil {
+		return "", fmt.Errorf("error decoding secret: %v", err)
+	}
+
+	// Calculate the time counter based on the provided time and period.
+	counter := uint64(t.Unix() / int64(options.Period))
+	var counterBytes [8]byte
+	binary.BigEndian.PutUint64(counterBytes[:], counter)
+
+	// Create an HMAC hash using the selected algorithm.
+	mac := hmac.New(options.Algorithm, key)
+	mac.Write(counterBytes[:])
+	hashResult := mac.Sum(nil)
+
+	// Dynamic truncation per RFC 4226.
+	offset := hashResult[len(hashResult)-1] & 0x0F
+	if int(offset)+4 > len(hashResult) {
+		return "", fmt.Errorf("invalid offset, out of bounds")
+	}
+	binaryCode := (uint32(hashResult[offset])&0x7F)<<24 |
+		(uint32(hashResult[offset+1])&0xFF)<<16 |
+		(uint32(hashResult[offset+2])&0xFF)<<8 |
+		(uint32(hashResult[offset+3]) & 0xFF)
+
+	// Compute modulus based on the desired number of digits.
+	mod := uint32(1)
+	for i := 0; i < options.Digits; i++ {
+		mod *= 10
+	}
+	otp := binaryCode % mod
+
+	// Format the OTP with leading zeros if necessary.
+	otpStr := fmt.Sprintf("%0*d", options.Digits, otp)
+	return otpStr, nil
+}
