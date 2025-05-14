@@ -9,15 +9,15 @@
 //  बी.स.जी - बोसजी के द्वारा रचित सुरक्षा एवं गोपनीयता हेतु तन्त्राक्ष्।
 // ================================================
 //
-// एक सुरक्षा एवं गोपनीयता केंद्रित तंत्राक्षों का संकलन। 
+// एक सुरक्षा एवं गोपनीयता केंद्रित तंत्राक्षों का संकलन।
 //
 // एक रचनात्मक भारतीय उत्पाद ।
 //
 // bsg - Boseji's Security and Privacy Utilities
 //
 // A collection of Security and Privacy utilities and some notes for help.
-// 
-// This is **Golang** package collection as well as few utility 
+//
+// This is **Golang** package collection as well as few utility
 // command line programs.
 //
 // Sources
@@ -51,3 +51,18 @@
 // digit length, hash algorithm, and the time variable.
 package totp
 
+import (
+	"hash"
+	"time"
+)
+
+// Options holds configuration parameters for TOTP generation.
+type Options struct {
+	Period    int              // Time step in seconds (default is 30).
+	Digits    int              // Number of digits in the OTP (default is 6).
+	Algorithm func() hash.Hash // Hash algorithm constructor (default is sha1.New).
+	Time      time.Time        // Optional time to use. If zero, time.Now() is used.
+}
+
+// Option is a function that modifies Options.
+type Option func(*Options)
