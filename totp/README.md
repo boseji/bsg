@@ -34,6 +34,12 @@ feature rich library:
 Many thanks to the excellent work done by the contributors and generously
 supporting the Open-source security movement.
 
+## Acknowledgments
+
+- [RFC 6238](https://tools.ietf.org/html/rfc6238) for the TOTP specification
+- Thanks to the Go standard library for robust packages supporting cryptography, JSON handling,
+  and file embedding
+
 ## License
 
 `SPDX: GPL-3.0-or-later`
