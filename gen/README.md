@@ -28,12 +28,18 @@ This package provides secure alternatives for generating random integers, floati
 
 ### Features
 
-* graphically secure versions of:
+* Cryptographically secure versions of:
 
   * `Int`, `IntN`, `Int32`, `Int32N`, `Int64`, `Int64N`
   * `Uint`, `UintN`, `Uint32`, `Uint32N`, `Uint64`, `Uint64N`
   * `Float32`, `Float64`
   * `Shuffle`, `Perm`
+
+* Random Length String Generation
+
+  * Supplied with Default charset `gen.CharSet`
+
+    `0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`
 
 ### Usage Examples
 
@@ -47,24 +53,25 @@ perm := gen.Perm(10)    // secure permutation of [0..9]
 
 ### API Reference
 
-| Function         | Description                                  |
-| ---------------- | -------------------------------------------- |
-| `Int()`          | Secure random `int`                          |
-| `IntN(n int)`    | Secure random `int` in `[0, n)`              |
-| `Int32()`        | Secure random `int32`                        |
-| `Int32N(n)`      | Secure random `int32` in `[0, n)`            |
-| `Int64()`        | Secure random `int64`                        |
-| `Int64N(n)`      | Secure random `int64` in `[0, n)`            |
-| `Uint()`         | Secure random `uint`                         |
-| `UintN(n)`       | Secure random `uint` in `[0, n)`             |
-| `Uint32()`       | Secure random `uint32`                       |
-| `Uint32N(n)`     | Secure random `uint32` in `[0, n)`           |
-| `Uint64()`       | Secure random `uint64`                       |
-| `Uint64N(n)`     | Secure random `uint64` in `[0, n)`           |
-| `Float32()`      | Secure random `float32` in `[0.0, 1.0)`      |
-| `Float64()`      | Secure random `float64` in `[0.0, 1.0)`      |
-| `Shuffle(n, fn)` | Securely shuffles a range using `swap(i, j)` |
-| `Perm(n)`        | Returns secure permutation of `[0, n)`       |
+| Function         | Description                                                                 |
+| ---------------- | --------------------------------------------------------------------------- |
+| `Int()`          | Secure random `int`                                                         |
+| `IntN(n int)`    | Secure random `int` in `[0, n)`                                             |
+| `Int32()`        | Secure random `int32`                                                       |
+| `Int32N(n)`      | Secure random `int32` in `[0, n)`                                           |
+| `Int64()`        | Secure random `int64`                                                       |
+| `Int64N(n)`      | Secure random `int64` in `[0, n)`                                           |
+| `Uint()`         | Secure random `uint`                                                        |
+| `UintN(n)`       | Secure random `uint` in `[0, n)`                                            |
+| `Uint32()`       | Secure random `uint32`                                                      |
+| `Uint32N(n)`     | Secure random `uint32` in `[0, n)`                                          |
+| `Uint64()`       | Secure random `uint64`                                                      |
+| `Uint64N(n)`     | Secure random `uint64` in `[0, n)`                                          |
+| `Float32()`      | Secure random `float32` in `[0.0, 1.0)`                                     |
+| `Float64()`      | Secure random `float64` in `[0.0, 1.0)`                                     |
+| `Shuffle(n, fn)` | Securely shuffles a range using `swap(i, j)`                                |
+| `Perm(n)`        | Returns secure permutation of `[0, n)`                                      |
+| `String(ch, n)`  | Securely generate a string of Random items from the supplied character-set. |
 
 
 ## License
