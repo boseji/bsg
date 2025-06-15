@@ -50,6 +50,7 @@ package gen
 
 import (
 	"crypto/rand"
+	hx "encoding/hex"
 	"fmt"
 	"math/big"
 )
@@ -81,4 +82,9 @@ func String(charset string, length int) (string, error) {
 	}
 
 	return string(result), nil
+}
+
+// Hex helps to print the bytes in Hex String format.
+func Hex(data []byte) string {
+	return hx.EncodeToString(data)
 }

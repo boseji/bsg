@@ -158,3 +158,46 @@ func TestStringUTF8Charset(t *testing.T) {
 		}
 	}
 }
+
+func TestHex(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    []byte
+		expected string
+	}{
+		{
+			name:     "empty input",
+			input:    []byte{},
+			expected: "",
+		},
+		{
+			name:     "ASCII letters",
+			input:    []byte("abc"),
+			expected: "616263",
+		},
+		{
+			name:     "hex values",
+			input:    []byte{0xde, 0xad, 0xbe, 0xef},
+			expected: "deadbeef",
+		},
+		{
+			name:     "zero byte",
+			input:    []byte{0x00},
+			expected: "00",
+		},
+		{
+			name:     "all 0xFF",
+			input:    []byte{0xff, 0xff, 0xff},
+			expected: "ffffff",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			result := gen.Hex(tt.input)
+			if result != tt.expected {
+				t.Errorf("Hex(%v) = %s, expected %s", tt.input, result, tt.expected)
+			}
+		})
+	}
+}
