@@ -53,25 +53,36 @@ perm := gen.Perm(10)    // secure permutation of [0..9]
 
 ### API Reference
 
-| Function         | Description                                                                 |
-| ---------------- | --------------------------------------------------------------------------- |
-| `Int()`          | Secure random `int`                                                         |
-| `IntN(n int)`    | Secure random `int` in `[0, n)`                                             |
-| `Int32()`        | Secure random `int32`                                                       |
-| `Int32N(n)`      | Secure random `int32` in `[0, n)`                                           |
-| `Int64()`        | Secure random `int64`                                                       |
-| `Int64N(n)`      | Secure random `int64` in `[0, n)`                                           |
-| `Uint()`         | Secure random `uint`                                                        |
-| `UintN(n)`       | Secure random `uint` in `[0, n)`                                            |
-| `Uint32()`       | Secure random `uint32`                                                      |
-| `Uint32N(n)`     | Secure random `uint32` in `[0, n)`                                          |
-| `Uint64()`       | Secure random `uint64`                                                      |
-| `Uint64N(n)`     | Secure random `uint64` in `[0, n)`                                          |
-| `Float32()`      | Secure random `float32` in `[0.0, 1.0)`                                     |
-| `Float64()`      | Secure random `float64` in `[0.0, 1.0)`                                     |
-| `Shuffle(n, fn)` | Securely shuffles a range using `swap(i, j)`                                |
-| `Perm(n)`        | Returns secure permutation of `[0, n)`                                      |
-| `String(ch, n)`  | Securely generate a string of Random items from the supplied character-set. |
+| Function                | Description                                                                 |
+| ----------------------- | --------------------------------------------------------------------------- |
+| `Int()`                 | Secure random `int`                                                         |
+| `IntN(n int)`           | Secure random `int` in `[0, n)`                                             |
+| `Int32()`               | Secure random `int32`                                                       |
+| `Int32N(n)`             | Secure random `int32` in `[0, n)`                                           |
+| `Int64()`               | Secure random `int64`                                                       |
+| `Int64N(n)`             | Secure random `int64` in `[0, n)`                                           |
+| `Uint()`                | Secure random `uint`                                                        |
+| `UintN(n)`              | Secure random `uint` in `[0, n)`                                            |
+| `Uint32()`              | Secure random `uint32`                                                      |
+| `Uint32N(n)`            | Secure random `uint32` in `[0, n)`                                          |
+| `Uint64()`              | Secure random `uint64`                                                      |
+| `Uint64N(n)`            | Secure random `uint64` in `[0, n)`                                          |
+| `Float32()`             | Secure random `float32` in `[0.0, 1.0)`                                     |
+| `Float64()`             | Secure random `float64` in `[0.0, 1.0)`                                     |
+| `Shuffle(n, fn)`        | Securely shuffles a range using `swap(i, j)`                                |
+| `Perm(n)`               | Returns secure permutation of `[0, n)`                                      |
+| `String(ch, n)`         | Securely generate a string of Random items from the supplied character-set. |
+| `Hex(data)`             | Encodes the byte array into a Hex string                                    |
+| `BST()`                 | Always return Bharat Standard Time (IST)                                    |
+| `ToBST(t)`              | Convert any given time with respective Timezone into Bharat Standard Time   |
+| `SHA1(data)`            | Takes a Byte slice and returns the byte slice containing SHA1 Hash          |
+| `SHA256(data)`          | Takes a Byte slice and returns the byte slice containing SHA256 Hash        |
+| `SHA384(data)`          | Takes a Byte slice and returns the byte slice containing SHA384 Hash        |
+| `SHA512(data)`          | Takes a Byte slice and returns the byte slice containing SHA256 Hash        |
+| `SHA3_256(data)`        | Takes a Byte slice and returns the byte slice containing SHA3-256 Hash      |
+| `SHA3_512(data)`        | Takes a Byte slice and returns the byte slice containing SHA3-512 Hash      |
+| `SHAKE128(data,length)` | Gives the SHAKE128 Hash with the desired Length                             |
+| `SHAKE256(data,length)` | Gives the SHAKE256 Hash with the desired Length                             |
 
 
 ## License
