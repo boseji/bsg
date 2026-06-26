@@ -74,6 +74,7 @@ def get_ntp_utc_time(server="pool.ntp.org", timeout=2, debug=False):
 
 # --- TOTP generator ---
 def generate_totp(secret_base32, digits=6, period=30, algo=hashlib.sha1, time_source=get_ntp_utc_time):
+    secret_base32 = secret_base32.replace(' ', '').replace('\r', '').replace('\n', '') # Clean out the spaces
     key = base64.b32decode(secret_base32, casefold=True)
     current_time = time_source()
     counter = current_time // period
@@ -87,7 +88,7 @@ def generate_totp(secret_base32, digits=6, period=30, algo=hashlib.sha1, time_so
 
 # --- Dictionary of TOTP entries ---
 accounts = [
-    {"name": "gmail1", "totp": "JBSWY3DPEHPK3PXP"},
+    {"name": "gmail1", "totp": "JBSW Y3DPE  HPK3PXP"},
     {"name": "github", "totp": "GEZDGNBVGY3TQOJQ"},
     {"name": "banking", "totp": "MZXW6YTBOI======"},
 ]
